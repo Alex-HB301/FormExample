@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         btnBirthDate.setOnClickListener(v -> showDatePicker());
         btnSubmit.setOnClickListener(v -> {
             if (validateForm()) {
-                
+                askForConfirmation();
             }
         });
 
@@ -157,7 +157,22 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void askForConfirmation() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.confirm_title)
+                .setMessage(R.string.confirm_message)
+                .setPositiveButton(R.string.yes, (dialog, which) -> submitForm())
+                .setNegativeButton(R.string.no, null)
+                .show();
+    }
 
+    private void submitForm() {
+        tvSummary.setText(buildSummary());
+
+        Snackbar.make(findViewById(R.id.main), R.string.sent, Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, v -> tvSummary.setText(""))
+                .show();
+    }
 
     private String buildSummary() {
         String mode = rgMode.getCheckedRadioButtonId() == R.id.rbOnsite
